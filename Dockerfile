@@ -6,8 +6,8 @@ ARG CRUCIBLE_VERSION=3.10.3
 ARG CONTAINER_UID=1000
 ARG CONTAINER_GID=1000
 
-ENV CRUCIBLE_HOME=/var/atlassian/crucible \
-    FISHEYE_INST=/opt/crucible \
+ENV FISHEYE_INST=/var/atlassian/crucible \
+    CRUCIBLE_INSTALL=/opt/crucible \
     CRUCIBLE_PROXY_NAME= \
     CRUCIBLE_PROXY_PORT= \
     CRUCIBLE_PROXY_SCHEME=
@@ -33,20 +33,20 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     wget -O /tmp/crucible.zip https://www.atlassian.com/software/crucible/downloads/binary/crucible-${CRUCIBLE_VERSION}.zip && \
     unzip /tmp/crucible.zip -d /tmp && \
     mv /tmp/fecru-${CRUCIBLE_VERSION} /tmp/crucible && \
-    mkdir -p ${CRUCIBLE_HOME} && \
+    mkdir -p ${FISHEYE_INST} && \
     mkdir -p /opt && \
     mv /tmp/crucible /opt/crucible && \
     # Install database drivers
     rm -f                                               \
-      ${FISHEYE_INST}/lib/mysql-connector-java*.jar &&  \
+      ${CRUCIBLE_INSTALL}/lib/mysql-connector-java*.jar &&  \
     wget -O /tmp/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz                                              \
       http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz && \
     tar xzf /tmp/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz                                              \
       -C /tmp && \
     cp /tmp/mysql-connector-java-${MYSQL_DRIVER_VERSION}/mysql-connector-java-${MYSQL_DRIVER_VERSION}-bin.jar     \
-      ${FISHEYE_INST}/lib/mysql-connector-java-${MYSQL_DRIVER_VERSION}-bin.jar                                &&  \
-    rm -f ${FISHEYE_INST}/lib/postgresql-*.jar                                                                &&  \
-    wget -O ${FISHEYE_INST}/lib/postgresql-${POSTGRESQL_DRIVER_VERSION}.jar                                       \
+      ${CRUCIBLE_INSTALL}/lib/mysql-connector-java-${MYSQL_DRIVER_VERSION}-bin.jar                                &&  \
+    rm -f ${CRUCIBLE_INSTALL}/lib/postgresql-*.jar                                                                &&  \
+    wget -O ${CRUCIBLE_INSTALL}/lib/postgresql-${POSTGRESQL_DRIVER_VERSION}.jar                                       \
       https://jdbc.postgresql.org/download/postgresql-${POSTGRESQL_DRIVER_VERSION}.jar && \
     # Adding letsencrypt-ca to truststore
     wget -O /home/${CONTAINER_USER}/letsencryptauthorityx1.der https://letsencrypt.org/certs/letsencryptauthorityx1.der && \
@@ -56,9 +56,9 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     wget -O /home/${CONTAINER_USER}/SSLPoke.class https://confluence.atlassian.com/kb/files/779355358/SSLPoke.class && \
     # Container user permissions
     chown -R crucible:crucible /home/${CONTAINER_USER} && \
-    chown -R crucible:crucible ${CRUCIBLE_HOME} && \
-    chmod -R u=rwx,g=rwx,o=-rwx ${FISHEYE_INST} && \
     chown -R crucible:crucible ${FISHEYE_INST} && \
+    chmod -R u=rwx,g=rwx,o=-rwx ${CRUCIBLE_INSTALL} && \
+    chown -R crucible:crucible ${CRUCIBLE_INSTALL} && \
     # Remove obsolete packages
     apk del \
       ca-certificates \

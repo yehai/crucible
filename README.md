@@ -24,7 +24,69 @@ Docker-CLI:
 Just type and follow the manual installation procedure in your browser:
 
 ~~~~
-$ docker run -d -p 8080:8080 --name crucible blacklabelops/crucible
+$ docker run -d -p 8060:8060 --name crucible blacklabelops/crucible
 ~~~~
 
-> Point your browser to http://yourdockerhost:8080
+> Point your browser to http://yourdockerhost:8060
+
+# Setup
+
+1. Start database server for Crucible.
+1. Start Crucible.
+1. Manual Crucible setup.
+
+Firstly, start the database server for Crucible:
+
+> Note: Change Password!
+
+~~~~
+$ docker run --name postgres_crucible -d \
+    -e 'POSTGRES_DB=crucibledb' \
+    -e 'POSTGRES_USER=crucibledb' \
+    -e 'POSTGRES_PASSWORD=jellyfish' \
+    -e 'POSTGRES_ENCODING=UTF8' \
+    blacklabelops/postgres
+~~~~
+
+Secondly, start Crucible:
+
+~~~~
+$ docker run -d --name crucible \
+	  --link postgres_crucible:postgres_crucible \
+	  -p 8060:8060 blacklabelops/crucible
+~~~~
+
+>  Starts Crowd and links it to the postgresql instances. JDBC URL: jdbc:postgresql://postgres_crucible/crucibledb
+
+Thirdly, configure your Crucible yourself and fill it with a test license.
+
+Point your browser to http://yourdockerhost:8060
+
+1. Create and enter license information
+1. Fill out the rest of the installation procedure.
+1. Login to the application and enter the administration area.
+1. Go to `System Settings` -> `Database`
+1. Click `Edit` and fill out the form:
+  * Type: `PostgreSQL`
+  * Driver Location: `Bundled`
+  * URL: `jdbc:postgresql://postgres_crucible:5432/crucibledb`
+  * User Name: `crucibledb`
+  * Password: `jellyfish`
+  * Minimum Pool Connections: `5`
+  * Maximum Pool Connections: `20`
+  * Parameters:
+1. Press `Test connection`and then `Save & Migrate`
+
+Enjoy Crucible!
+
+# Support & Feature Requests
+
+Leave a message and ask questions on Hipchat: [blacklabelops/hipchat](https://www.hipchat.com/geogBFvEM)
+
+# References
+
+* [Atlassian Crucible](https://www.atlassian.com/software/crucible)
+* [Docker Homepage](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
+* [Docker Userguide](https://docs.docker.com/userguide/)
+* [Oracle Java](https://java.com/de/download/)
