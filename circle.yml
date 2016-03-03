@@ -14,7 +14,7 @@ dependencies:
 test:
   override:
     - docker run -d -p 8100:8060 --name="crucible" blacklabelops/crucible
-    - sleep 60
+    - sleep 120
     - docker logs crucible
     - curl --retry 10 --retry-delay 10 -v http://localhost:8100/
     - docker stop crucible
