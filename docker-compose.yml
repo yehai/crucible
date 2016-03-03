@@ -1,0 +1,49 @@
+version: '2'
+
+services:
+  crucible:
+    image: blacklabelops/crucible
+    container_name: crucible
+    hostname: crucible
+    networks:
+      - cruciblenet
+    volumes:
+      - crucibledata:/var/atlassian/crucible
+    ports:
+      - '80:8060'
+    environment:
+      - 'CRUCIBLE_PROXY_NAME='
+      - 'CRUCIBLE_PROXY_PORT='
+      - 'CRUCIBLE_PROXY_SCHEME='
+      - 'CRUCIBLE_DELAYED_START='
+    labels:
+      com.blacklabelops.description: "Atlassian Crucible"
+      com.blacklabelops.service: "crucible"
+
+  postgresql:
+    image: blacklabelops/postgres
+    container_name: postgres_crucible
+    hostname: postgres_crucible
+    networks:
+      - cruciblenet
+    volumes:
+      - postgresqldata:/var/lib/postgresql/data
+    environment:
+      - 'POSTGRES_USER=crucibledb'
+      # CHANGE THE PASSWORD!
+      - 'POSTGRES_PASSWORD=jellyfish'
+      - 'POSTGRES_DB=crucibledb'
+      - 'POSTGRES_ENCODING=UTF8'
+    labels:
+      com.blacklabelops.description: "PostgreSQL Database Server"
+      com.blacklabelops.service: "postgresql"
+
+volumes:
+  crucibledata:
+    external: false
+  postgresqldata:
+    external: false
+
+networks:
+  cruciblenet:
+    driver: bridge
