@@ -4,15 +4,15 @@ set -o errexit
 
 function processCrucibleProxySettings() {
   if [ -n "${CRUCIBLE_PROXY_NAME}" ]; then
-    xmlstarlet ed -P -S -L --insert "//Connector[not(@proxyName)]" --type attr -n proxyName --value "${CRUCIBLE_PROXY_NAME}" ${CRUCIBLE_INSTALL}/conf/server.xml
+    xmlstarlet ed -P -S -L --insert "//http[not(@proxy-host)]" --type attr -n proxy-host --value "${CRUCIBLE_PROXY_NAME}" ${CRUCIBLE_INSTALL}/config.xml
   fi
 
   if [ -n "${CRUCIBLE_PROXY_PORT}" ]; then
-    xmlstarlet ed -P -S -L --insert "//Connector[not(@proxyPort)]" --type attr -n proxyPort --value "${CRUCIBLE_PROXY_PORT}" ${CRUCIBLE_INSTALL}/conf/server.xml
+    xmlstarlet ed -P -S -L --insert "//http[not(@proxy-port)]" --type attr -n proxy-port --value "${CRUCIBLE_PROXY_PORT}" ${CRUCIBLE_INSTALL}/config.xml
   fi
 
   if [ -n "${CRUCIBLE_PROXY_SCHEME}" ]; then
-    xmlstarlet ed -P -S -L --insert "//Connector[not(@scheme)]" --type attr -n scheme --value "${CRUCIBLE_PROXY_SCHEME}" ${CRUCIBLE_INSTALL}/conf/server.xml
+    xmlstarlet ed -P -S -L --insert "//http[not(@proxy-scheme)]" --type attr -n proxy-scheme --value "${CRUCIBLE_PROXY_SCHEME}" ${CRUCIBLE_INSTALL}/config.xml
   fi
 }
 
