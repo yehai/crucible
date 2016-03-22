@@ -1,7 +1,7 @@
 FROM blacklabelops/java:openjre8
 MAINTAINER Steffen Bleul <sbl@blacklabelops.com>
 
-ARG CRUCIBLE_VERSION=3.10.3
+ARG CRUCIBLE_VERSION=4.0.2
 # permissions
 ARG CONTAINER_UID=1000
 ARG CONTAINER_GID=1000
