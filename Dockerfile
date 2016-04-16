@@ -59,6 +59,10 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     chown -R crucible:crucible ${FISHEYE_INST} && \
     chmod -R u=rwx,g=rwx,o=-rwx ${CRUCIBLE_INSTALL} && \
     chown -R crucible:crucible ${CRUCIBLE_INSTALL} && \
+    # Install Tini Zombie Reaper And Signal Forwarder
+    export TINI_VERSION=0.9.0 && \
+    curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static -o /bin/tini && \
+    chmod +x /bin/tini && \
     # Remove obsolete packages
     apk del \
       ca-certificates \
@@ -74,5 +78,5 @@ WORKDIR /var/atlassian/crucible
 VOLUME ["/var/atlassian/crucible"]
 EXPOSE 8060
 COPY imagescripts /home/crucible
-ENTRYPOINT ["/home/crucible/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/tini","--","/home/crucible/docker-entrypoint.sh"]
 CMD ["crucible"]
