@@ -25,6 +25,7 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     apk add --update \
       ca-certificates \
       unzip \
+      curl \
       wget &&  \
     apk add xmlstarlet --update-cache \
       --repository \
@@ -67,6 +68,7 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     apk del \
       ca-certificates \
       unzip \
+      curl \
       wget &&  \
     # Clean caches and tmps
     rm -rf /var/cache/apk/* && \
