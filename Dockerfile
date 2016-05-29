@@ -23,6 +23,8 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
             -s /bin/bash \
             -S $CONTAINER_USER &&  \
     apk add --update \
+      git \
+      mercurial \
       ca-certificates \
       unzip \
       curl \
