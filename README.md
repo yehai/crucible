@@ -6,7 +6,7 @@
 
 | Product |Version | Tags  | Dockerfile |
 |---------|--------|-------|------------|
-| Bitbucket | 4.2.0 | 4.2.0, latest | [Dockerfile](https://github.com/blacklabelops/crucible/blob/master/Dockerfile) |
+| Bitbucket | 4.3.0 | 4.3.0, latest | [Dockerfile](https://github.com/blacklabelops/crucible/blob/master/Dockerfile) |
 
 ## Related Images
 
