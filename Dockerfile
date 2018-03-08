@@ -1,7 +1,7 @@
 FROM blacklabelops/java:openjre8
 MAINTAINER Steffen Bleul <sbl@blacklabelops.com>
 
-ARG CRUCIBLE_VERSION=4.4.1
+ARG CRUCIBLE_VERSION=4.5.2
 # permissions
 ARG CONTAINER_UID=1000
 ARG CONTAINER_GID=1000
@@ -40,9 +40,11 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     mkdir -p ${FISHEYE_INST} && \
     mkdir -p /opt && \
     mv /tmp/crucible /opt/crucible && \
+    rm -f                                               \
+    ${CRUCIBLE_INSTALL}/lib/atlassian-extras-*.*.jar &&  \
     # Install database drivers
     rm -f                                               \
-      ${CRUCIBLE_INSTALL}/lib/mysql-connector-java*.jar &&  \
+    ${CRUCIBLE_INSTALL}/lib/mysql-connector-java*.jar &&  \
     wget -O /tmp/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz                                              \
       http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz && \
     tar xzf /tmp/mysql-connector-java-${MYSQL_DRIVER_VERSION}.tar.gz                                              \
@@ -88,6 +90,8 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/* && \
     rm -rf /var/log/*
+
+COPY ./${CRUCIBLE_VERSION}/*.jar "${CRUCIBLE_INSTALL}/lib/"
 
 USER crucible
 WORKDIR /var/atlassian/crucible
