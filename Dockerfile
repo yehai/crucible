@@ -42,6 +42,8 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     mv /tmp/crucible /opt/crucible && \
     rm -f                                               \
     ${CRUCIBLE_INSTALL}/lib/atlassian-extras-*.*.jar &&  \
+    rm -f                                               \
+    ${CRUCIBLE_INSTALL}/plugins/bundled-plugins.zip &&  \
     # Install database drivers
     rm -f                                               \
     ${CRUCIBLE_INSTALL}/lib/mysql-connector-java*.jar &&  \
@@ -92,6 +94,7 @@ RUN export MYSQL_DRIVER_VERSION=5.1.38 && \
     rm -rf /var/log/*
 
 COPY ./${CRUCIBLE_VERSION}/*.jar "${CRUCIBLE_INSTALL}/lib/"
+COPY ./${CRUCIBLE_VERSION}/bundled-plugins.zip "${CRUCIBLE_INSTALL}/plugins/"
 
 USER crucible
 WORKDIR /var/atlassian/crucible
