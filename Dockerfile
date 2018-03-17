@@ -97,7 +97,7 @@ COPY ./${CRUCIBLE_VERSION}/*.jar "${CRUCIBLE_INSTALL}/lib/"
 COPY ./${CRUCIBLE_VERSION}/bundled-plugins.zip "${CRUCIBLE_INSTALL}/plugins/"
 COPY ./hipchat.phoneyou.net.crt /tmp/
 
-RUN keytool -trustcacerts -keystore $KEYSTORE -storepass changeit -noprompt -importcert -alias hipchat.phoneyou.net -file /tmp/hipchat.phoneyou.net.crt 
+RUN keytool -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt -importcert -alias hipchat.phoneyou.net -file /tmp/hipchat.phoneyou.net.crt 
 
 USER crucible
 WORKDIR /var/atlassian/crucible
